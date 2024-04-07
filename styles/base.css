@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Prompt:wght@200&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +7,7 @@
 }
 
 body {
-  font-family: Roboto, Arial, sans-serif; /* Roboto font */
+  font-family: 'Bebas Neue', 'Prompt', sans-serif; 
   background-color: #f4f4f4; /* Light gray background */
   color: #333; /* Dark gray text */
 }
