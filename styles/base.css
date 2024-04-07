@@ -1,110 +1,74 @@
 * {
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: "Roboto";
-  }
-  
-  header {
-    padding: 1rem;
-    display: grid;
-    grid-template-columns: 100px auto;
-  }
-  
-  header img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  h1 {
-    align-self: center;
-  }
-  
-  .card {
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 1rem;
-    background-color: #e6f0ff; /* Updated background color */
-  }
-  
-  .card:hover {
-    border: 3px solid #000;
-    background-color: #c9daff; /* Updated background color */
-  }
-  
-  .card img {
-    max-width: 50%;
-    height: auto;
-    float: right;
-  }
-  
-  .card p {
-    padding: 1rem;
-  }
-  
-  .temp {
-    font-size: 2.2rem;
-    font-weight: bold;
-    padding: 1rem;
-    animation: sizes 3s linear 1s infinite alternate;
-  }
-  
-  main {
-    margin: 1rem;
-  }
-  
-  footer {
-    padding: 1rem;
-    text-align: center;
-    background-color: #1a1a1a; /* Updated background color */
-    color: #ffffff; /* Updated text color */
-  }
-  
-  #cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-    gap: 1rem;
-  }
-  
-  #user-input {
-    margin: 10px 2px 15px 1px;
-  }
-  
-  label {
-    display: block;
-  }
-  
-  label input {
-    display: block;
-    width: 100%;
-    max-width: 19rem;
-    padding: 0.6rem;
-    margin-left: 0.1rem;
-  }
-  
-  button {
-    display: block;
-    background-color: #1a1a1a; /* Updated background color */
-    color: #ffffff; /* Updated text color */
-    padding: 0.5rem 0.6rem;
-    margin-top: 0.5rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    font-weight: bolder;
-  }
-  
-  @keyframes sizes {
-    from {
-      font-size: 2.2rem;
-    }
-    to {
-      font-size: 1.8rem;
-    }
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto, Arial, sans-serif; /* Roboto font */
+  background-color: #f4f4f4; /* Light gray background */
+  color: #333; /* Dark gray text */
+}
+
+header {
+  padding: 1rem;
+  background-color: #007dc3; /* Teal header */
+  color: #ffffff; /* White text for header */
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.card {
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 10px;
+  padding: 1rem;
+  background-color: #fff; /* White background for cards */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+}
+
+.card p {
+  margin-bottom: 0.5rem;
+}
+
+.temp {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+footer {
+  padding: 1rem;
+  background-color: #007dc3; /* Teal footer */
+  color: #ffffff; /* White text for footer */
+  text-align: center;
+}
+
+button {
+  background-color: #f05133; /* Thunder orange for buttons */
+  color: #ffffff; /* White text for buttons */
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+button:hover {
+  background-color: #d44021; /* Darker shade of Thunder orange on hover */
+}
