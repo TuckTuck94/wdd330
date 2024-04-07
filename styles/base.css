@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Poppins', 'Prompt', sans-serif; 
-  background-color: #f4f4f4; /* Light gray background */
-  color: #333; /* Dark gray text */
+  background-color: #333; 
+  color: #f4f4f4; 
 }
 
 header {
@@ -32,7 +32,7 @@ h1 {
   border-radius: 10px;
   padding: 1rem;
   color: #ffffff;
-  background-color: #007dc3; /* White background for cards */
+  background-color: #007dc3; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
