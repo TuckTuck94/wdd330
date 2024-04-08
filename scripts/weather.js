@@ -9,9 +9,9 @@ const footer = document.querySelector("footer");
 const API_KEY = "e935a5a6a1ec7a93d72d1fa9eceab7a2";
 
 // Fetch weather data for a given location
-async function getWeatherData(place) {
+async function getWeatherData(zip) {
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${API_KEY}&units=imperial`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?zip=${zip}&appid=${API_KEY}&units=imperial`);
     const data = await response.json();
     updateWeatherDisplay(data);
   } catch (error) {
@@ -47,12 +47,12 @@ function updateWeatherDisplay(data) {
 
 // Search button click event handler
 search.addEventListener("click", () => {
-  const place = userInput.value;
-  if (place.trim() !== "") {
-    getWeatherData(place);
-    saveHistory(place);
+  const zip = userInput.value;
+  if (zip.trim() !== "") {
+    getWeatherData(zip);
+    saveHistory(zip);
   } else {
-    alert("Please enter a city name.");
+    alert("Please enter a zip code.");
   }
 });
 
@@ -79,6 +79,6 @@ footer.innerHTML = `&copy; ${new Date().getFullYear()} Weather Forecast App`;
 
 // Fetch weather data for the initial location on page load
 window.addEventListener("load", () => {
-  const defaultCity = "New York City"; // Set your default city name here
-  getWeatherData(defaultCity);
+  const defaultZip = "73071"; // Set your default zip code here
+  getWeatherData(defaultZip);
 });
