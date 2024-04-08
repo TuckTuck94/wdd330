@@ -29,15 +29,15 @@ function updateWeatherDisplay(data) {
 
   data.list.slice(0, 7).forEach(dayData => {
     const date = new Date(dayData.dt * 1000);
-    const dayName = date.toLocaleString("en-US", { weekday: "long" });
-    const dateString = date.toLocaleString("en-US", { month: "short", day: "numeric" });
+    const options = { weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "numeric" };
+    const dateTimeString = date.toLocaleString("en-US", options);
     const temp = dayData.main.temp.toFixed(1);
     const weatherIconSrc = `http://openweathermap.org/img/w/${dayData.weather[0].icon}.png`;
 
     const card = document.createElement("section");
     card.classList.add("card");
     card.innerHTML = `
-      <h2>${dayName}, ${dateString}</h2>
+      <h2>${dateTimeString}</h2>
       <p>${dayData.weather[0].description}</p>
       <img src="${weatherIconSrc}" alt="${dayData.weather[0].description}">
       <span class="temp">${temp} °F</span>
@@ -65,21 +65,6 @@ function saveHistory(city) {
   localStorage.setItem("history", JSON.stringify(history));
   displayHistory(history);
 }
-
-// Display search history
-function displayHistory(history) {
-  historySection.innerHTML = "";
-  history.forEach((city, index) => {
-    const listItem = document.createElement("li");
-    listItem.textContent = city;
-    listItem.addEventListener("click", () => {
-      getWeatherData(city);
-    });
-    historySection.appendChild(listItem);
-  });
-}
-
-
 
 // Update footer with current year
 footer.innerHTML = `&copy; ${new Date().getFullYear()} Weather Forecast App`;
