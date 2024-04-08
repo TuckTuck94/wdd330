@@ -6,30 +6,14 @@ const userInput = document.querySelector("#city");
 const historySection = document.querySelector("#history");
 const footer = document.querySelector("footer");
 
-const API_KEY = "TNWCLXHU27EZ9QVR9Y6XYQLHY";
-const GEOLOCATION_API_KEY = "4d998f6f989b4eb6a8b6e94ca0c4ffc2";
-const GEOLOCATION_API = `https://api.ipgeolocation.io/ipgeo?apiKey=${GEOLOCATION_API_KEY}`;
-const WEATHER_API = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
-
-// Fetch user's geolocation and get weather data
-async function getWeatherByLocation() {
-  try {
-    const response = await fetch(GEOLOCATION_API);
-    const { city } = await response.json();
-    getLocalWeather(city);
-  } catch (error) {
-    console.error("Error fetching geolocation data:", error);
-    alert("Failed to determine your location. Please try again or enter a city manually.");
-  }
-}
+const API_KEY = "e935a5a6a1ec7a93d72d1fa9eceab7a2";
 
 // Fetch weather data for a given location
-async function getLocalWeather(place) {
+async function getWeatherData(place) {
   try {
-    const unit = "us"; // Fahrenheit (US units)
-    const response = await fetch(`${WEATHER_API}${place}?unitGroup=${unit}&key=${API_KEY}`);
-    const { resolvedAddress, days } = await response.json();
-    updateWeatherDisplay(resolvedAddress, days);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${place}&appid=${API_KEY}&units=imperial`);
+    const data = await response.json();
+    updateWeatherDisplay(data);
   } catch (error) {
     console.error("Error fetching weather data:", error);
     alert("Error fetching weather data. Please try again later.");
@@ -37,24 +21,25 @@ async function getLocalWeather(place) {
 }
 
 // Update weather display with fetched data
-function updateWeatherDisplay(address, days) {
-  titlePage.textContent = `${address} Weather Forecast`;
+function updateWeatherDisplay(data) {
+  titlePage.textContent = `${data.city.name} Weather Forecast`;
   box.innerHTML = ""; // Clear previous data
-  days.slice(0, 7).forEach((day) => {
-    const card = document.createElement("section");
-    card.classList.add("card");
-    const date = new Date(day.datetime);
+
+  data.list.slice(0, 7).forEach(dayData => {
+    const date = new Date(dayData.dt * 1000);
     const dayName = date.toLocaleString("en-US", { weekday: "long" });
     const dateString = date.toLocaleString("en-US", { month: "short", day: "numeric" });
-    const temp = day.temp.toFixed(1);
-    const weatherIconSrc = `images/${day.icon.replace(" ", "-")}.png`;
+    const temp = dayData.main.temp.toFixed(1);
+    const weatherIconSrc = `http://openweathermap.org/img/w/${dayData.weather[0].icon}.png`;
 
+    const card = document.createElement("section");
+    card.classList.add("card");
     card.innerHTML = `
       <h2>${dayName}, ${dateString}</h2>
-      <p>${day.description}</p>
-      <img src="${weatherIconSrc}" alt="${day.icon}">
+      <p>${dayData.weather[0].description}</p>
+      <img src="${weatherIconSrc}" alt="${dayData.weather[0].description}">
       <span class="temp">${temp} °F</span>
-      <p>Humidity: ${day.humidity}%</p>
+      <p>Humidity: ${dayData.main.humidity}%</p>
     `;
     box.appendChild(card);
   });
@@ -64,7 +49,7 @@ function updateWeatherDisplay(address, days) {
 search.addEventListener("click", () => {
   const place = userInput.value;
   if (place.trim() !== "") {
-    getLocalWeather(place);
+    getWeatherData(place);
     saveHistory(place);
   } else {
     alert("Please enter a city name.");
@@ -82,14 +67,18 @@ function saveHistory(userInput) {
 historySection.addEventListener("click", () => {
   const lastQuery = JSON.parse(localStorage.getItem("history"));
   if (lastQuery && lastQuery.length > 0) {
-    document.querySelector("#qresult").textContent = lastQuery[lastQuery.length - 1];
+    userInput.value = lastQuery[lastQuery.length - 1];
+    getWeatherData(userInput.value);
   } else {
     alert("No previous search history found.");
   }
 });
 
-// Fetch weather data based on user's geolocation on page load
-getWeatherByLocation();
-
 // Update footer with current year
 footer.innerHTML = `&copy; ${new Date().getFullYear()} Weather Forecast App`;
+
+// Fetch weather data for the initial location on page load
+window.addEventListener("load", () => {
+  const defaultCity = "New York City"; // Set your default city name here
+  getWeatherData(defaultCity);
+});
