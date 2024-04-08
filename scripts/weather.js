@@ -2,7 +2,7 @@
 const titlePage = document.querySelector("h1");
 const box = document.querySelector("#cards");
 const search = document.querySelector("#searchBtn");
-const userInput = document.querySelector("#city");
+const userInput = document.querySelector("#zip");
 const historySection = document.querySelector("#history");
 const footer = document.querySelector("footer");
 
@@ -77,6 +77,11 @@ historySection.addEventListener("click", () => {
 // Update footer with current year
 footer.innerHTML = `&copy; ${new Date().getFullYear()} Weather Forecast App`;
 
+// Fetch weather data for the initial location on page load
+window.addEventListener("load", () => {
+  const defaultZip = "73071"; // Set your default zip code here
+  getWeatherData(defaultZip);
+});
 // Fetch weather data for the initial location on page load
 window.addEventListener("load", () => {
   const defaultZip = "73071"; // Set your default zip code here
