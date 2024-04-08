@@ -2,18 +2,19 @@
 const titlePage = document.querySelector("h1");
 const box = document.querySelector("#cards");
 const search = document.querySelector("#searchBtn");
-const userInput = document.querySelector("#zip");
+const userInput = document.querySelector("#city");
 const historySection = document.querySelector("#history");
 const footer = document.querySelector("footer");
 
 const API_KEY = "e935a5a6a1ec7a93d72d1fa9eceab7a2";
 
 // Fetch weather data for a given location
-async function getWeatherData(zip) {
+async function getWeatherData(city) {
   try {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?zip=${zip}&appid=${API_KEY}&units=imperial`);
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=imperial`);
     const data = await response.json();
     updateWeatherDisplay(data);
+    saveHistory(city);
   } catch (error) {
     console.error("Error fetching weather data:", error);
     alert("Error fetching weather data. Please try again later.");
@@ -22,7 +23,8 @@ async function getWeatherData(zip) {
 
 // Update weather display with fetched data
 function updateWeatherDisplay(data) {
-  titlePage.textContent = `${data.city.name} Weather Forecast`;
+  const cityName = `${data.city.name}, ${data.city.country}`;
+  titlePage.textContent = `${cityName} Weather Forecast`;
   box.innerHTML = ""; // Clear previous data
 
   data.list.slice(0, 7).forEach(dayData => {
@@ -47,43 +49,43 @@ function updateWeatherDisplay(data) {
 
 // Search button click event handler
 search.addEventListener("click", () => {
-  const zip = userInput.value;
-  if (zip.trim() !== "") {
-    getWeatherData(zip);
-    saveHistory(zip);
+  const city = userInput.value;
+  if (city.trim() !== "") {
+    getWeatherData(city);
   } else {
-    alert("Please enter a zip code.");
+    alert("Please enter a city name.");
   }
 });
 
 // Save search history to localStorage
-function saveHistory(userInput) {
+function saveHistory(city) {
   let history = JSON.parse(localStorage.getItem("history")) || [];
-  history.push(userInput);
+  history.push(city);
+  history = history.slice(-3); // Keep only the last 3 searches
   localStorage.setItem("history", JSON.stringify(history));
+  displayHistory(history);
 }
 
-// Display last search history
-historySection.addEventListener("click", () => {
-  const lastQuery = JSON.parse(localStorage.getItem("history"));
-  if (lastQuery && lastQuery.length > 0) {
-    userInput.value = lastQuery[lastQuery.length - 1];
-    getWeatherData(userInput.value);
-  } else {
-    alert("No previous search history found.");
-  }
-});
+// Display search history
+function displayHistory(history) {
+  historySection.innerHTML = "";
+  history.forEach((city, index) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = city;
+    listItem.addEventListener("click", () => {
+      getWeatherData(city);
+    });
+    historySection.appendChild(listItem);
+  });
+}
+
+
 
 // Update footer with current year
 footer.innerHTML = `&copy; ${new Date().getFullYear()} Weather Forecast App`;
 
 // Fetch weather data for the initial location on page load
 window.addEventListener("load", () => {
-  const defaultZip = "73071"; // Set your default zip code here
-  getWeatherData(defaultZip);
-});
-// Fetch weather data for the initial location on page load
-window.addEventListener("load", () => {
-  const defaultZip = "73071"; // Set your default zip code here
-  getWeatherData(defaultZip);
+  const defaultCity = "Norman"; // Set your default city name here
+  getWeatherData(defaultCity);
 });
