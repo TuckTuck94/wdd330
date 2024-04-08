@@ -12,6 +12,9 @@ const API_KEY = "e935a5a6a1ec7a93d72d1fa9eceab7a2";
 async function getWeatherData(city) {
   try {
     const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=imperial`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
     const data = await response.json();
     updateWeatherDisplay(data);
     saveHistory(city);
